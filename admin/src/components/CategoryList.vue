@@ -1,21 +1,13 @@
 <template>
   <div>
     <h1>分类列表</h1>
-    <el-table
-      height="70vh"
-      :data="items"
-      row-key="id"
-      border
-      lazy
-      :load="load"
-      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-    >
+    <el-table height="70vh" :data="items" row-key="id" border>
       <el-table-column prop="_id" label="ID"></el-table-column>
       <el-table-column prop="name" label="分类名称"></el-table-column>
       <el-table-column prop="parent.name" label="上级分类"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button @click="$router.push('rest/categories/edit/'+ scope.row._id)">编辑</el-button>
+          <el-button @click="$router.push('/categories/edit/'+ scope.row._id)">编辑</el-button>
           <el-button type="danger" @click="remove(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -35,7 +27,6 @@ export default {
       const res = await this.$http.get("rest/categories");
       this.items = res.data;
     },
-    laod() {},
     async remove(row) {
       this.$confirm(`确定要删除分类"${row.name}"吗?`, "提示", {
         confirmButtonText: "确定",
