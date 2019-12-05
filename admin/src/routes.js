@@ -27,6 +27,7 @@ const routes = [
       { path: '/heros/create', component: HeroEdit },
       { path: '/heros/list', component: HeroList },
       { path: '/items/create', component: ItemEdit },
+      { path: '/items/edit/:id', component: ItemEdit, props: true },
       { path: '/items/list', component: ItemList },
       { path: '/ads/create', component: AdsEdit },
       { path: '/ads/list', component: AdsList },
