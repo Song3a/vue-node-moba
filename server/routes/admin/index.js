@@ -3,11 +3,12 @@ module.exports = app => {
   const router = express.Router({
     mergeParams: true
   })
-
+  // 保存数据
   router.post('/', async (req, res) => {
     const model = await req.Model.create(req.body)
     res.send(model)
   })
+  // 更新数据
   router.put('/:id', async (req, res) => {
     const model = await req.Model.findByIdAndUpdate(req.params.id, req.body)
     res.send(model)
@@ -21,11 +22,10 @@ module.exports = app => {
     else if (req.Model.modelName === 'Item') {
       queryOptions.populate = 'tag'
     }
-    //个别情况
-    const items = await req.Model.find().setOptions(queryOptions).limit(10)
+    const items = await req.Model.find().setOptions(queryOptions).limit(99)
     res.send(items)
   })
-  // 请求分类标签选项
+  // 请求分类选项
   router.get('/parent-options', async (req, res) => {
     let items = {}
     const Model = require('../../models/Category')
@@ -34,28 +34,28 @@ module.exports = app => {
       res.send(items)
     }
     else if (req.Model.modelName === 'Item') {
-      items = await Model.find({ 'parent': { $exists: true } })
-        .populate({ path: 'parent', match: { name: 'item' } })
+      items = await Model.findOne({ name: 'item' }).populate('children')
       res.send(items)
     }
   })
   router.get('/props-options', async (req, res) => {
     const Model = require('../../models/Category')
-    const items = Model.find({ 'parent': { $exists: true } })
-      .populate({ path: 'parent', match: { name: 'props' } })
-    res.send(JSON.stringify(items))
+    const items = await Model.findOne({ name: 'props' }).populate('children')
+    res.send(items)
   })
+  // 请求编辑单个数据
   router.get('/:id', async (req, res) => {
     const model = await req.Model.findById(req.params.id)
     res.send(model)
   })
+  // 删除数据
   router.delete('/:id', async (req, res) => {
     await req.Model.findByIdAndDelete(req.params.id)
     res.send({
       success: true
     })
   })
-  //通用CRUD接口
+  //中间件，通用CRUD接口
   app.use('/admin/api/rest/:resource', async (req, res, next) => {
     const modelName = require('inflection').classify(req.params.resource)
     req.Model = require('../../models/' + modelName)

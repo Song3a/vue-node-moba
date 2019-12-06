@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const schema = new mongoose.Schema({
   name: { type: String },
   parent: { type: mongoose.SchemaTypes.ObjectId, ref: 'Category' }
-})
+}, { toJSON: { virtuals: true } })
 
 schema.virtual('children', {
   localField: '_id',
@@ -12,11 +12,11 @@ schema.virtual('children', {
   ref: 'Category'
 })
 
-// schema.virtual('newsList', {
-//   localField: '_id',
-//   foreignField: 'categories',
-//   justOne: false,
-//   ref: 'Article'
-// })
+schema.virtual('newsList', {
+  localField: '_id',
+  foreignField: 'categories',
+  justOne: false,
+  ref: 'Article'
+})
 
 module.exports = mongoose.model('Category', schema)

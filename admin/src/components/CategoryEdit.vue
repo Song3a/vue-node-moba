@@ -8,7 +8,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="名称">
-        <el-input v-model="model.name"></el-input>
+        <el-input v-model="model.name" style="width:200px"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" native-type="submit">保存</el-button>
@@ -39,6 +39,7 @@ export default {
         type: "success",
         message: "保存成功"
       });
+      this.$router.push("/categories/list");
     },
     async fetch() {
       const res = await this.$http.get("rest/categories/" + this.id);
