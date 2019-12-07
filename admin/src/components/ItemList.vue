@@ -4,7 +4,11 @@
     <el-table height="70vh" :data="items" row-key="id" border>
       <el-table-column prop="_id" label="ID"></el-table-column>
       <el-table-column prop="name" label="名称"></el-table-column>
-      <el-table-column prop="icon" label="图标"></el-table-column>
+      <el-table-column prop="icon" label="图标">
+        <template slot-scope="scope">
+          <img :src="scope.row.icon" style="height:3rem">
+        </template>
+      </el-table-column>
       <el-table-column prop="tag.name" label="分类"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">

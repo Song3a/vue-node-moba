@@ -15,18 +15,17 @@
       <el-form-item label="装备名称">
         <el-input v-model="model.name" style="width:300px"></el-input>
       </el-form-item>
-      <!-- <el-form-item label="图标上传">
+      <el-form-item label="图标上传">
         <el-upload
           class="avatar-uploader"
-          action="https://jsonplaceholder.typicode.com/posts/"
+          :action="$http.defaults.baseURL + '/upload'"
           :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
+          :on-success="afterUpload"
         >
-          <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+          <img v-if="model.icon" :src="model.icon" class="avatar" />
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
-      </el-form-item>-->
+      </el-form-item>
       <el-form-item v-for="(item,index) in propsArray" :label="'装备属性' + (index+1)" :key="item.key">
         <el-input v-model="item.value" style="width:500px;margin-right:10px">
           <el-select slot="prepend" placeholder="选择属性" v-model="item.prop">
@@ -70,6 +69,9 @@ export default {
     };
   },
   methods: {
+    afterUpload(res) {
+      this.$set(this.model, "icon", res.url);
+    },
     addData() {
       this.propsArray.push({
         prop: "",
