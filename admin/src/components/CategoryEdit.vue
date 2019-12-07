@@ -10,6 +10,9 @@
       <el-form-item label="名称">
         <el-input v-model="model.name" style="width:200px"></el-input>
       </el-form-item>
+      <el-form-item label="字段名">
+        <el-input v-model="model.filed" style="width:200px"></el-input>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" native-type="submit">保存</el-button>
       </el-form-item>

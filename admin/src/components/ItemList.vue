@@ -3,8 +3,9 @@
     <h1>装备列表</h1>
     <el-table height="70vh" :data="items" row-key="id" border>
       <el-table-column prop="_id" label="ID"></el-table-column>
-      <el-table-column prop="name" label="装备名称"></el-table-column>
-      <el-table-column prop="icon" label="装备图标"></el-table-column>
+      <el-table-column prop="name" label="名称"></el-table-column>
+      <el-table-column prop="icon" label="图标"></el-table-column>
+      <el-table-column prop="tag.name" label="分类"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button @click="$router.push('/items/edit/'+ scope.row._id)">编辑</el-button>

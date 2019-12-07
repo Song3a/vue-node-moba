@@ -15,7 +15,7 @@
       <el-form-item label="装备名称">
         <el-input v-model="model.name" style="width:300px"></el-input>
       </el-form-item>
-      <el-form-item label="图标上传">
+      <!-- <el-form-item label="图标上传">
         <el-upload
           class="avatar-uploader"
           action="https://jsonplaceholder.typicode.com/posts/"
@@ -26,15 +26,15 @@
           <img v-if="imageUrl" :src="imageUrl" class="avatar" />
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
-      </el-form-item>
-      <el-form-item v-for="(item,index) in addition" :label="'装备属性' + (index+1)" :key="item.key">
+      </el-form-item>-->
+      <el-form-item v-for="(item,index) in propsArray" :label="'装备属性' + (index+1)" :key="item.key">
         <el-input v-model="item.value" style="width:500px;margin-right:10px">
           <el-select slot="prepend" placeholder="选择属性" v-model="item.prop">
             <el-option
               v-for="item in itemProps.children"
               :key="item._id"
               :label="item.name"
-              :value="item.name"
+              :value="item.filed"
             ></el-option>
           </el-select>
         </el-input>
@@ -42,6 +42,7 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="addData">新增属性条目</el-button>
+        <span style="color:#8c939d;margin-left:20px">(目前只提供攻击/防御属性的记录)</span>
       </el-form-item>
       <el-form-item label="装备描述">
         <el-input type="textarea" style="width:500px" :rows="8" v-model="model.describe"></el-input>
@@ -60,71 +61,45 @@ export default {
   },
   data() {
     return {
-      model: {},
-      addition: [
-        {
-          prop: "",
-          value: 0
-        }
-      ],
+      model: {
+        addition: {}
+      },
+      propsArray: [],
       itemTags: [],
       itemProps: []
     };
   },
   methods: {
     addData() {
-      this.addition.push({
+      this.propsArray.push({
         prop: "",
-        value: 0,
+        value: "",
         key: Date.now()
       });
     },
     removeData(item) {
-      var index = this.addition.indexOf(item);
+      var index = this.propsArray.indexOf(item);
       if (index !== -1) {
-        this.addition.splice(index, 1);
+        this.propsArray.splice(index, 1);
       }
     },
-    saveData() {
-      let propName;
-      window.console.log(this.addition)
-      for (const item in this.addition) {
-        switch (item.prop) {
-          case "生命值":
-            propName = "hp";
-            break;
-          case "物理攻击":
-            propName = "ad";
-            break;
-          case "物理防御":
-            propName = "rom";
-            break;
-          case "物理穿透":
-            propName = "adp";
-            break;
-          case "法术攻击":
-            propName = "ap";
-            break;
-          case "法术防御":
-            propName = "rst";
-            break;
-          case "法术穿透":
-            propName = "app";
-            break;
-          case "暴击几率":
-            propName = "crit";
-            break;
-          case "暴击效果":
-            propName = "effect";
-            break;
-          default:
-            break;
-        }
-        this.$set(this.model, propName, item.value);
+    // 数据的中间转换
+    saveModel() {
+      for (const item of this.propsArray) {
+        this.$set(this.model.addition, item.prop, item.value);
       }
     },
+    loadModel() {
+      for (const key in this.model.addition) {
+        let item = {};
+        item.prop = key;
+        item.value = this.model.addition[key];
+        this.propsArray.push(item);
+      }
+    },
+    // 发送请求保存数据
     async save() {
-      this.saveData();
+      this.saveModel();
       if (this.id) {
         await this.$http.put("rest/items/" + this.id, this.model);
       } else {
@@ -134,10 +109,12 @@ export default {
         type: "success",
         message: "保存成功"
       });
+      this.$router.push("/items/list");
     },
     async fetch() {
       const res = await this.$http.get("rest/items/" + this.id);
       this.model = res.data;
+      this.loadModel();
     },
     async fetchTags() {
       const res = await this.$http.get("rest/items/parent-options");

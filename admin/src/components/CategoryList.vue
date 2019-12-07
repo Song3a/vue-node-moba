@@ -4,6 +4,7 @@
     <el-table height="70vh" :data="items" row-key="id" border>
       <el-table-column prop="_id" label="ID"></el-table-column>
       <el-table-column prop="name" label="分类名称"></el-table-column>
+      <el-table-column prop="filed" label="字段标识"></el-table-column>
       <el-table-column prop="parent.name" label="上级分类"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
