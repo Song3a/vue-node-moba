@@ -24,6 +24,9 @@ module.exports = app => {
     else if (req.Model.modelName === 'Item') {
       queryOptions.populate = 'tag'
     }
+    else if (req.Model.modelName === 'Article') {
+      queryOptions.populate = 'category'
+    }
     const items = await req.Model.find(findOptions).setOptions(queryOptions).limit(99)
     res.send(items)
   })
@@ -36,13 +39,17 @@ module.exports = app => {
       res.send(items)
     }
     else if (req.Model.modelName === 'Item') {
-      items = await Model.findOne({ name: 'item' }).populate('children')
+      items = await Model.findOne({ name: '装备分类' }).populate('children')
+      res.send(items)
+    }
+    else if (req.Model.modelName === 'Article') {
+      items = await Model.findOne({ name: '文章分类' }).populate('children')
       res.send(items)
     }
   })
   router.get('/props-options', async (req, res) => {
     const Model = require('../../models/Category')
-    const items = await Model.findOne({ name: 'props' }).populate('children')
+    const items = await Model.findOne({ name: '属性分类' }).populate('children')
     res.send(items)
   })
   // 请求编辑单个数据

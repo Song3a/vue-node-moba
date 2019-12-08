@@ -63,8 +63,8 @@ export default {
       model: {
         addition: []
       },
-      itemTags: [],
-      itemProps: []
+      itemTags: {},
+      itemProps: {}
     };
   },
   methods: {

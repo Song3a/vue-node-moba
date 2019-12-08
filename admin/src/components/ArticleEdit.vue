@@ -1,33 +1,22 @@
 <template>
   <div>
-    <h1>{{this.id ? '编辑' : '新增'}}广告位</h1>
+    <h1>{{this.id ? '编辑' : '新增'}}文章</h1>
     <el-form label-width="120px" @submit.native.prevent="save">
-      <el-form-item label="广告位标题">
-        <el-input v-model="model.name" style="width:300px"></el-input>
+      <el-form-item label="文章标题">
+        <el-input v-model="model.title" style="width:300px"></el-input>
       </el-form-item>
-      <el-form-item label="广告">
-        <el-button icon="el-icon-plus" @click="model.items.push({})">增加广告</el-button>
-        <el-row type="flex" style="flex-wrap: wrap">
-          <el-col :md="24" v-for="(item, i) in model.items" :key="i">
-            <el-form-item label="跳转链接 (URL)" style="margin-top: 0.5rem">
-              <el-input v-model="item.url"></el-input>
-            </el-form-item>
-            <el-form-item label="图片" style="margin-top: 0.5rem">
-              <el-upload
-                class="avatar-uploader"
-                :action="$http.defaults.baseURL + '/upload'"
-                :show-file-list="false"
-                :on-success="res => $set(item, 'image', res.url)"
-              >
-                <img v-if="item.image" :src="item.image" class="avatar" />
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
-            </el-form-item>
-            <el-form-item>
-              <el-button size="small" type="danger" @click="model.items.splice(i, 1)">删除</el-button>
-            </el-form-item>
-          </el-col>
-        </el-row>
+      <el-form-item label="文章分类">
+        <el-select v-model="model.category">
+          <el-option
+            v-for="item in articleTags.children"
+            :key="item._id"
+            :label="item.name"
+            :value="item._id"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="文章详情">
+        <vue-editor v-model="model.body" useCustomImageHandler @image-added="handleImageAdded"></vue-editor>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" native-type="submit">保存</el-button>
@@ -37,36 +26,53 @@
 </template>
 
 <script>
+import { VueEditor } from "vue2-editor";
+
 export default {
   props: {
     id: {}
   },
+  components: {
+    VueEditor
+  },
   data() {
     return {
-      model: {
-        items: []
-      }
+      model: {},
+      articleTags: {}
     };
   },
   methods: {
+    async handleImageAdded(file, Editor, cursorLocation, resetUploader) {
+      var formData = new FormData();
+      formData.append("file", file);
+
+      const res = await this.$http.post("upload", formData);
+      Editor.insertEmbed(cursorLocation, "image", res.data.url);
+      resetUploader();
+    },
     async save() {
       if (this.id) {
-        await this.$http.put("rest/ads/" + this.id, this.model);
+        await this.$http.put("rest/articles/" + this.id, this.model);
       } else {
-        await this.$http.post("rest/ads", this.model);
+        await this.$http.post("rest/articles", this.model);
       }
       this.$message({
         type: "success",
         message: "保存成功"
       });
-      this.$router.push("/ads/list");
+      this.$router.push("/articles/list");
+    },
+    async fetchTags() {
+      const res = await this.$http.get("rest/articles/parent-options");
+      this.articleTags = res.data;
     },
     async fetch() {
-      const res = await this.$http.get("rest/ads/" + this.id);
-      this.model = Object.assign({}, this.model, res.data);
+      const res = await this.$http.get("rest/articles/" + this.id);
+      this.model = res.data;
     }
   },
   created() {
+    this.fetchTags();
     this.id && this.fetch();
   }
 };
