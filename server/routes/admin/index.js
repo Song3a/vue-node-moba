@@ -16,13 +16,15 @@ module.exports = app => {
   // 请求列表数据
   router.get('/', async (req, res) => {
     const queryOptions = {}
+    let findOptions = {}
     if (req.Model.modelName === 'Category') {
-      queryOptions.populate = 'parent'
+      findOptions = { 'parent': { $exists: false } }
+      queryOptions.populate = 'children'
     }
     else if (req.Model.modelName === 'Item') {
       queryOptions.populate = 'tag'
     }
-    const items = await req.Model.find().setOptions(queryOptions).limit(99)
+    const items = await req.Model.find(findOptions).setOptions(queryOptions).limit(99)
     res.send(items)
   })
   // 请求分类选项

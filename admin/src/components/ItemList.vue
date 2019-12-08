@@ -1,12 +1,19 @@
 <template>
   <div>
     <h1>装备列表</h1>
-    <el-table height="70vh" :data="items" row-key="id" border>
+    <el-table
+      height="70vh"
+      :data="items"
+      row-key="id"
+      border
+      size="small"
+      :default-sort="{prop:'tag.name'}"
+    >
       <el-table-column prop="_id" label="ID"></el-table-column>
-      <el-table-column prop="name" label="名称"></el-table-column>
+      <el-table-column prop="name" label="名称" sortable></el-table-column>
       <el-table-column prop="icon" label="图标">
         <template slot-scope="scope">
-          <img :src="scope.row.icon" style="height:3rem">
+          <img :src="scope.row.icon" style="height:3rem" />
         </template>
       </el-table-column>
       <el-table-column prop="tag.name" label="分类"></el-table-column>

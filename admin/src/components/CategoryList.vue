@@ -1,8 +1,15 @@
 <template>
   <div>
     <h1>分类列表</h1>
-    <el-table height="70vh" :data="items" row-key="id" border>
-      <el-table-column prop="_id" label="ID"></el-table-column>
+    <el-table
+      height="70vh"
+      :data="items"
+      row-key="_id"
+      size="small"
+      border
+      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+    >
+      <el-table-column prop="_id" label="ID" width="260"></el-table-column>
       <el-table-column prop="name" label="分类名称"></el-table-column>
       <el-table-column prop="filed" label="字段标识"></el-table-column>
       <el-table-column prop="parent.name" label="上级分类"></el-table-column>
