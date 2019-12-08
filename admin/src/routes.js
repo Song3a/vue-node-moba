@@ -30,6 +30,7 @@ const routes = [
       { path: '/items/edit/:id', component: ItemEdit, props: true },
       { path: '/items/list', component: ItemList },
       { path: '/ads/create', component: AdsEdit },
+      { path: '/ads/edit/:id', component: AdsEdit, props: true },
       { path: '/ads/list', component: AdsList },
       { path: '/admin/create', component: AdminEdit },
       { path: '/admin/list', component: AdminList }
