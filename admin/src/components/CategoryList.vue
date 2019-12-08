@@ -9,10 +9,9 @@
       border
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
-      <el-table-column prop="_id" label="ID" width="260"></el-table-column>
+      <el-table-column prop="_id" label="ID"></el-table-column>
       <el-table-column prop="name" label="分类名称"></el-table-column>
-      <el-table-column prop="filed" label="字段标识"></el-table-column>
-      <el-table-column prop="parent.name" label="上级分类"></el-table-column>
+      <el-table-column prop="parent" label="上级分类"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button @click="$router.push('/categories/edit/'+ scope.row._id)">编辑</el-button>
@@ -36,18 +35,25 @@ export default {
       this.items = res.data;
     },
     async remove(row) {
-      this.$confirm(`确定要删除分类"${row.name}"吗?`, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(async () => {
-        await this.$http.delete("rest/categories/" + row._id);
-        this.$message({
-          type: "success",
-          message: "删除成功!"
+      if (!row.parent) {
+        this.$alert("一级分类，请不要删除！", "提示", {
+          confirmButtonText: "确定",
+          type: "warning"
         });
-        this.fetch();
-      });
+      } else {
+        this.$confirm(`确定要删除分类"${row.name}"吗?`, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(async () => {
+          await this.$http.delete("rest/categories/" + row._id);
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+          this.fetch();
+        });
+      }
     }
   },
   created() {

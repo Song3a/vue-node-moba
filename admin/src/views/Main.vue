@@ -1,7 +1,7 @@
 <template>
   <el-container style="height: 100vh">
-    <el-aside width="200px">
-      <el-menu router :default-openeds="['1','2','3']">
+    <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+      <el-menu router unique-opened :default-active="$router.path">
         <el-submenu index="1">
           <template slot="title">
             <i class="el-icon-edit"></i>内容管理
@@ -15,6 +15,11 @@
             <template slot="title">装备</template>
             <el-menu-item index="/items/create">新增装备</el-menu-item>
             <el-menu-item index="/items/list">装备列表</el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group>
+            <template slot="title">文章</template>
+            <el-menu-item index="/articles/create">新增文章</el-menu-item>
+            <el-menu-item index="/articles/list">文章列表</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
         <el-submenu index="2">
@@ -59,7 +64,7 @@
       </el-header>
 
       <el-main>
-        <router-view></router-view>
+        <router-view :key="$router.path"></router-view>
       </el-main>
     </el-container>
   </el-container>

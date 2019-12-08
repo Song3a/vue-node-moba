@@ -6,6 +6,8 @@ import AdminEdit from './components/AdminEdit.vue'
 import AdminList from './components/AdminList.vue'
 import AdsEdit from './components/AdsEdit.vue'
 import AdsList from './components/AdsList.vue'
+import ArticleEdit from './components/ArticleEdit.vue'
+import ArticleList from './components/ArticleList.vue'
 import CategoryEdit from './components/CategoryEdit.vue'
 import CategoryList from './components/CategoryList.vue'
 import HeroEdit from './components/HeroEdit.vue'
@@ -32,6 +34,9 @@ const routes = [
       { path: '/ads/create', component: AdsEdit },
       { path: '/ads/edit/:id', component: AdsEdit, props: true },
       { path: '/ads/list', component: AdsList },
+      { path: '/articles/create', component: ArticleEdit },
+      { path: '/articles/edit/:id', component: ArticleEdit, props: true },
+      { path: '/articles/list', component: ArticleList },
       { path: '/admin/create', component: AdminEdit },
       { path: '/admin/list', component: AdminList }
     ]

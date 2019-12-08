@@ -1,8 +1,7 @@
 const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
-  name: { type: String },
-  filed: { type: String },
+  name: { type: String },  
   parent: { type: mongoose.SchemaTypes.ObjectId, ref: 'Category' }
 }, { toJSON: { virtuals: true } })
 

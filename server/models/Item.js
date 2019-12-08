@@ -4,17 +4,10 @@ const schema = new mongoose.Schema({
   name: { type: String },
   icon: { type: String },
   tag: { type: mongoose.SchemaTypes.ObjectId, ref: 'Category' },
-  addition: {
-    hp: { type: Number },
-    ad: { type: Number },
-    ap: { type: Number },
-    rom: { type: Number },
-    rst: { type: Number },
-    adp: { type: Number },
-    app: { type: Number },
-    crit: { type: Number },
-    effect: { type: Number }
-  },
+  addition: [{
+    prop: { type: String },
+    value: { type: Number }
+  }],
   describe: { type: String }
 })
 
