@@ -27,6 +27,9 @@ module.exports = app => {
     else if (req.Model.modelName === 'Article') {
       queryOptions.populate = 'category'
     }
+    else if (req.Model.modelName === 'Hero') {
+      queryOptions.populate = 'tags'
+    }
     const items = await req.Model.find(findOptions).setOptions(queryOptions).limit(99)
     res.send(items)
   })
@@ -44,6 +47,10 @@ module.exports = app => {
     }
     else if (req.Model.modelName === 'Article') {
       items = await Model.findOne({ name: '文章分类' }).populate('children')
+      res.send(items)
+    }
+    else if (req.Model.modelName === 'Hero') {
+      items = await Model.findOne({ name: '英雄定位' }).populate('children')
       res.send(items)
     }
   })
@@ -64,13 +71,13 @@ module.exports = app => {
       success: true
     })
   })
-  //中间件，通用CRUD接口
+  // 中间件，通用CRUD接口
   app.use('/admin/api/rest/:resource', async (req, res, next) => {
     const modelName = require('inflection').classify(req.params.resource)
     req.Model = require('../../models/' + modelName)
     next()
   }, router)
-
+  // 中间件，文件上传接口
   const multer = require('multer')
   const upload = multer({ dest: __dirname + '../../../uploads' })
   app.post('/admin/api/upload', upload.single('file'), async (req, res) => {
