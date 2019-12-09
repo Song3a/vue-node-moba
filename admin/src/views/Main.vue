@@ -43,8 +43,8 @@
           </el-menu-item-group>
           <el-menu-item-group>
             <template slot="title">管理</template>
-            <el-menu-item index="/admin/create">新增管理</el-menu-item>
-            <el-menu-item index="/admin/list">管理列表</el-menu-item>
+            <el-menu-item index="/adminUsers/create">新增管理</el-menu-item>
+            <el-menu-item index="/adminUsers/list">管理列表</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
       </el-menu>

@@ -38,8 +38,9 @@ const routes = [
       { path: '/articles/create', component: ArticleEdit },
       { path: '/articles/edit/:id', component: ArticleEdit, props: true },
       { path: '/articles/list', component: ArticleList },
-      { path: '/admin/create', component: AdminEdit },
-      { path: '/admin/list', component: AdminList }
+      { path: '/adminUsers/create', component: AdminEdit },
+      { path: '/adminUsers/edit/:id', component: AdminEdit, props: true },
+      { path: '/adminUsers/list', component: AdminList }
     ]
   },
   {
