@@ -3,7 +3,7 @@
     <h1>{{this.id ? '编辑' : '新增'}}英雄</h1>
     <el-form label-width="100px" @submit.native.prevent="save">
       <el-tabs value="first">
-        <el-tab-pane label="英雄详情" name="first">
+        <el-tab-pane label="基础信息" name="first">
           <el-form-item label="英雄名称">
             <el-input v-model="model.name" style="width:300px"></el-input>
           </el-form-item>
@@ -27,6 +27,18 @@
                 :value="item._id"
               ></el-option>
             </el-select>
+          </el-form-item>
+          <el-form-item label="难度">
+            <el-rate style="margin-top:0.6rem" :max="9" show-score v-model="model.scores.difficult"></el-rate>
+          </el-form-item>
+          <el-form-item label="技能">
+            <el-rate style="margin-top:0.6rem" :max="9" show-score v-model="model.scores.skill"></el-rate>
+          </el-form-item>
+          <el-form-item label="攻击">
+            <el-rate style="margin-top:0.6rem" :max="9" show-score v-model="model.scores.attack"></el-rate>
+          </el-form-item>
+          <el-form-item label="生存">
+            <el-rate style="margin-top:0.6rem" :max="9" show-score v-model="model.scores.survive"></el-rate>
           </el-form-item>
         </el-tab-pane>
         <el-tab-pane label="技能编辑" name="second">
@@ -62,7 +74,56 @@
             </el-col>
           </el-row>
         </el-tab-pane>
-        <el-tab-pane label="公式化" name="third">
+        <el-tab-pane label="英雄属性" name="third">
+          <el-row type="flex" gutter="20">
+            <el-col :md="6">
+              <el-form-item label="最大生命值">
+                <el-input v-model="model.props.maxHp"></el-input>
+              </el-form-item>
+              <el-form-item label="生命成长">
+                <el-input v-model="model.props.hpLv"></el-input>
+              </el-form-item>
+              <el-form-item label="物理攻击">
+                <el-input v-model="model.props.ad"></el-input>
+              </el-form-item>
+              <el-form-item label="物理攻击成长">
+                <el-input v-model="model.props.adLv"></el-input>
+              </el-form-item>
+              <el-form-item label="法术攻击">
+                <el-input v-model="model.props.ap"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :md="6">
+              <el-form-item label="物理防御">
+                <el-input v-model="model.props.rom"></el-input>
+              </el-form-item>
+              <el-form-item label="防御成长">
+                <el-input v-model="model.props.romLv"></el-input>
+              </el-form-item>
+              <el-form-item label="法术防御">
+                <el-input v-model="model.props.rst"></el-input>
+              </el-form-item>
+              <el-form-item label="法术防御成长">
+                <el-input v-model="model.props.rstLv"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :md="6">
+              <el-form-item label="物理穿透">
+                <el-input v-model="model.props.adp"></el-input>
+              </el-form-item>
+              <el-form-item label="法术穿透">
+                <el-input v-model="model.props.app"></el-input>
+              </el-form-item>
+              <el-form-item label="暴击几率">
+                <el-input v-model="model.props.crit"></el-input>
+              </el-form-item>
+              <el-form-item label="暴击上限">
+                <el-input v-model="model.props.effect"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
+        <el-tab-pane label="公式化" name="forth">
           <h1>敬请期待...</h1>
         </el-tab-pane>
       </el-tabs>
@@ -81,7 +142,9 @@ export default {
   data() {
     return {
       model: {
-        skills: []
+        scores: {},
+        skills: [],
+        props: {}
       },
       heroTags: {}
     };
