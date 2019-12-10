@@ -45,7 +45,6 @@ export default {
     async handleImageAdded(file, Editor, cursorLocation, resetUploader) {
       var formData = new FormData();
       formData.append("file", file);
-
       const res = await this.$http.post("upload", formData);
       Editor.insertEmbed(cursorLocation, "image", res.data.url);
       resetUploader();
