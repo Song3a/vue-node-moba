@@ -75,7 +75,7 @@
           </el-row>
         </el-tab-pane>
         <el-tab-pane label="英雄属性" name="third">
-          <el-row type="flex" gutter="20">
+          <el-row type="flex" :gutter="20">
             <el-col :md="6">
               <el-form-item label="最大生命值">
                 <el-input v-model="model.props.maxHp"></el-input>
